@@ -83,7 +83,11 @@
 # if TARGET_OS_IPHONE
 #   define V8_OS_IOS 1
 #   ifndef USE_JSC
-#     define USE_JSC 1
+#     if TARGET_CPU_X86 || TARGET_CPU_X86_64
+#       define USE_JSC 0
+#     else
+#       define USE_JSC 1
+#     endif
 #   endif
 # endif
 #elif defined(__CYGWIN__)

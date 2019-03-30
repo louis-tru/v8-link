@@ -32,9 +32,6 @@
 		['use_v8==0 and os=="ios"', {
 			'target_defaults': {
 				'defines': [ 'USE_JSC=1' ],
-				'direct_dependent_settings': {
-					'defines': [ 'USE_JSC=1' ],
-				},
 			},
 			'targets': [
 			{
@@ -45,6 +42,9 @@
 					'libraries': [
 						'$(SDKROOT)/System/Library/Frameworks/JavaScriptCore.framework',
 					]
+				},
+				'direct_dependent_settings': {
+					'defines': [ 'USE_JSC=1' ],
 				},
 				'sources': [
 					'<@(v8_includes)',
@@ -114,14 +114,14 @@
 		{ # use v8
 			'target_defaults': {
 				'defines': [ 'USE_JSC=0' ],
-				'direct_dependent_settings': {
-					'defines': [ 'USE_JSC=0' ],
-				},
 			},
 			'targets': [
 			{
 				'target_name': 'v8-link',
 				'type': 'none',
+				'direct_dependent_settings': {
+					'defines': [ 'USE_JSC=0' ],
+				},
 				'sources': [
 					'<@(v8_includes)',
 				],
