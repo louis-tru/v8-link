@@ -12,6 +12,10 @@
  * For other documentation see http://code.google.com/apis/v8/
  */
 
+#ifndef USE_JSC
+#define USE_JSC 0
+#endif
+
 #ifndef V8_DEATH_RESET
 #if USE_JSC
 # define V8_DEATH_RESET Empty
