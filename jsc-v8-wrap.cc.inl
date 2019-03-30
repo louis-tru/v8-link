@@ -49,6 +49,8 @@ class Wrap: public PrivateDataBase {
 		CHECK(Handle() == nullptr);
 	}
 	virtual Wrap* AsWrap() { return this; }
+	virtual FunctionTemplate* AsFunctionTemplate() { return nullptr; }
+	virtual ObjectTemplate* AsObjectTemplate() { return nullptr; }
 	
 	inline void retain() {
 		JSValueProtect(m_isolate->jscc(), Handle());

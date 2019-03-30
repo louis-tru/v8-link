@@ -134,6 +134,8 @@ class ObjectTemplate: public Template {
 		free(m_indexed_configuration);
 	}
 	
+	virtual ObjectTemplate* AsObjectTemplate() { return this; }
+	
 	JSClassRef GetObjectClass(bool ignore_property_handler = false);
 	
 	JSObjectRef NewInstance(bool hidden_prototype = false, bool ignore_property_handler = false);
@@ -238,6 +240,8 @@ class FunctionTemplate: public Template {
 			JSStringRelease(m_name);
 		}
 	}
+	
+	virtual FunctionTemplate* AsFunctionTemplate() { return this; }
 	
 	inline FunctionTemplate* Receiver() const {
 		return m_receiver;
@@ -435,11 +439,11 @@ void Template::Set(JSStringRef name, Local<v8::Data> value, v8::PropertyAttribut
 	JSValueRef val = Back(value);
 	if (IsWrap(value)) {
 		auto w = reinterpret_cast<Wrap*>(*value);
-		auto ft = dynamic_cast<FunctionTemplate*>(w);
+		auto ft = w->AsFunctionTemplate();// dynamic_cast<FunctionTemplate*>(w);
 		if (ft) {
 			val = Back(ft->GetFunction());
 		} else {
-			auto ot = dynamic_cast<ObjectTemplate*>(w);
+			auto ot = w->AsObjectTemplate();// dynamic_cast<ObjectTemplate*>(w);
 			if (ot) {
 				val = ot->NewInstance();
 			} else {
