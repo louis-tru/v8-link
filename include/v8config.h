@@ -81,13 +81,13 @@
 # define V8_OS_MACOSX 1
 # define V8_OS_POSIX 1
 # if TARGET_OS_IPHONE
+#   include "jsc_cfg.h"
 #   define V8_OS_IOS 1
-#   ifndef USE_JSC
-#     if TARGET_CPU_X86 || TARGET_CPU_X86_64
-#       define USE_JSC 0
-#     else
-#       define USE_JSC 1
-#     endif
+#   if TARGET_CPU_X86 || TARGET_CPU_X86_64
+#     undef  USE_JSC
+#     define USE_JSC 0
+#   elif !defined(USE_JSC)
+#     define USE_JSC 1
 #   endif
 # endif
 #elif defined(__CYGWIN__)
