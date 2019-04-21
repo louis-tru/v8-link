@@ -82,7 +82,7 @@
 # define V8_OS_POSIX 1
 # if TARGET_OS_IPHONE
 #   define V8_OS_IOS 1
-#   include "jsc_cfg.h"
+#   include "v8-jsccfg.h"
 # endif
 #elif defined(__CYGWIN__)
 # define V8_OS_CYGWIN 1
