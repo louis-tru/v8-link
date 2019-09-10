@@ -139,7 +139,7 @@ bool v8::Object::ForceSet(v8::Local<Value> key, v8::Local<Value> value,
 Maybe<bool> v8::Object::SetPrivate(Local<Context> context,
 																	 Local<Private> key, Local<Value> value) {
 	ENV(context->GetIsolate());
-	auto jkey = i::Private::PrivateValue(key);
+	auto jkey = i::V8Private::PrivateValue(key);
 	
 	JSPropertyAttributes attrs = kJSPropertyAttributeReadOnly |
 		kJSPropertyAttributeDontEnum | kJSPropertyAttributeDontDelete;
@@ -183,7 +183,7 @@ Local<Value> v8::Object::Get(uint32_t index) {
 MaybeLocal<Value> v8::Object::GetPrivate(Local<Context> context,
 																				 Local<Private> key) {
 	ENV(context->GetIsolate());
-	auto name = i::Private::PrivateValue(key);
+	auto name = i::V8Private::PrivateValue(key);
 	auto r = JSObjectGetProperty(ctx, i::Back<JSObjectRef>(this),
 															 name, OK(MaybeLocal<Value>()));
 	return i::Cast(r);
@@ -352,7 +352,7 @@ bool v8::Object::Delete(v8::Local<Value> key) {
 Maybe<bool> v8::Object::DeletePrivate(Local<Context> context,
 																			Local<Private> key) {
 	ENV(context->GetIsolate());
-	auto jkey = i::Private::PrivateValue(key);
+	auto jkey = i::V8Private::PrivateValue(key);
 	bool r = JSObjectDeleteProperty(ctx, i::Back<JSObjectRef>(this), jkey, NOTHING);
 	return Just(r);
 }
@@ -380,7 +380,7 @@ bool v8::Object::Has(v8::Local<Value> key) {
 Maybe<bool> v8::Object::HasPrivate(Local<Context> context,
 																	 Local<Private> key) {
 	ENV(context->GetIsolate());
-	auto jkey = i::Private::PrivateValue(key);
+	auto jkey = i::V8Private::PrivateValue(key);
 	bool r = JSObjectHasProperty(ctx, i::Back<JSObjectRef>(this), jkey);
 	return Just(r);
 }

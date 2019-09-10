@@ -37,7 +37,7 @@ constexpr int kPointerSize = sizeof(void*);
  * @class Wrap
  * 这个类的功能主要为了方便内存管理`Wrap->m_handle`被回收时`Wrap`也会被删除
  */
-class Wrap: public PrivateDataBase {
+class Wrap: public PrivateInJSObject {
  public:
 	Wrap(Isolate* isolate): m_isolate(isolate) {
 		m_mark = &wrap_mark_ptr;
@@ -107,7 +107,7 @@ class Wrap: public PrivateDataBase {
 		return r;
 	}
 	static Wrap* Unwrap(JSObjectRef obj) {
-		auto priv = (PrivateDataBase*)JSObjectGetPrivate(obj);
+		auto priv = (PrivateInJSObject*)JSObjectGetPrivate(obj);
 		return priv ? priv->AsWrap() : nullptr;
 	}
 	
@@ -119,12 +119,12 @@ class Wrap: public PrivateDataBase {
 };
 
 /**
- * @class Private
+ * @class V8Private
  */
-class Private: public Wrap {
+class V8Private: public Wrap {
  public:
 	
-	Private(Isolate* iso, JSValueRef name)
+	V8Private(Isolate* iso, JSValueRef name)
 	: Wrap(iso), m_name(nullptr), m_private_value(nullptr) {
 		ENV(iso);
 		m_name = JSValueToStringCopy(ctx, name, &ex);
@@ -136,14 +136,14 @@ class Private: public Wrap {
 		JSStringRetain(m_name);
 		JSStringRetain(m_private_value);
 	}
-	virtual ~Private() {
+	virtual ~V8Private() {
 		JSStringRelease(m_name);
 		JSStringRelease(m_private_value);
 	}
 	inline JSStringRef Name() const { return m_name; }
 	inline JSStringRef Value() const { return m_private_value; }
 	static JSStringRef PrivateValue(Local<v8::Private> priv) {
-		auto p = reinterpret_cast<i::Private*>(*priv);
+		auto p = reinterpret_cast<i::V8Private*>(*priv);
 		return p->m_private_value;
 	}
 	
