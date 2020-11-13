@@ -49,10 +49,10 @@ Local<Value> Module::GetModuleNamespace() { UNIMPLEMENTED(); }
 Local<String> WasmCompiledModule::GetWasmWireBytes() {
 	UNIMPLEMENTED();
 }
-WasmCompiledModule::TransferrableModule&
-WasmCompiledModule::TransferrableModule::operator=(TransferrableModule&& src) {
-	UNIMPLEMENTED();
-}
+// WasmCompiledModule::TransferrableModule&
+// WasmCompiledModule::TransferrableModule::operator=(TransferrableModule&& src) {
+// 	UNIMPLEMENTED();
+// }
 WasmCompiledModule::TransferrableModule
 WasmCompiledModule::GetTransferrableModule() {
 	UNIMPLEMENTED();
@@ -138,12 +138,12 @@ Extension::Extension(
 // --- R e s o u r c e   C o n s t r a i n t s ---
 
 ResourceConstraints::ResourceConstraints()
-: max_semi_space_size_(0)
-, max_old_space_size_(0)
-, stack_limit_(NULL)
-, code_range_size_(0)
-, max_zone_pool_size_(0) {
-}
+	: max_semi_space_size_in_kb_(0),
+		max_old_space_size_(0),
+		stack_limit_(NULL),
+		code_range_size_(0),
+		max_zone_pool_size_(0) {}
+
 void ResourceConstraints::ConfigureDefaults(
 	uint64_t physical_memory,
 	uint64_t virtual_memory_limit) {
@@ -231,15 +231,9 @@ Local<Context> Isolate::GetIncumbentContext() { UNIMPLEMENTED(); }
 v8::Local<v8::Context> Isolate::GetCallingContext() { return Local<Context>(); }
 v8::Local<v8::Context> Isolate::GetEnteredContext() { return GetCurrentContext(); }
 v8::Local<v8::Context> Isolate::GetEnteredOrMicrotaskContext() { return GetCurrentContext(); }
-void Isolate::AddGCPrologueCallback(GCCallbackWithData callback, void* data,
-																		GCType gc_type_filter) {}
 void Isolate::AddGCPrologueCallback(GCCallback callback, GCType gc_type) {}
-void Isolate::RemoveGCPrologueCallback(GCCallbackWithData, void* data) {}
 void Isolate::RemoveGCPrologueCallback(GCCallback callback) {}
-void Isolate::AddGCEpilogueCallback(GCCallbackWithData callback, void* data,
-																		GCType gc_type_filter){}
 void Isolate::AddGCEpilogueCallback(GCCallback callback, GCType gc_type) {}
-void Isolate::RemoveGCEpilogueCallback(GCCallbackWithData callback, void* data) {}
 void Isolate::RemoveGCEpilogueCallback(GCCallback callback) {}
 void Isolate::SetGetExternallyAllocatedMemoryInBytesCallback(
 	GetExternallyAllocatedMemoryInBytesCallback callback) {}
@@ -302,9 +296,9 @@ void Isolate::SetStackLimit(uintptr_t stack_limit) {}
 void Isolate::GetCodeRange(void** start, size_t* length_in_bytes) {}
 void Isolate::SetOOMErrorHandler(OOMErrorCallback that) {}
 void Isolate::SetAllowCodeGenerationFromStringsCallback(
-	DeprecatedAllowCodeGenerationFromStringsCallback callback) {}
+	AllowCodeGenerationFromStringsCallback callback) {}
 void Isolate::SetAllowCodeGenerationFromStringsCallback(
-	FreshNewAllowCodeGenerationFromStringsCallback callback) {}
+	DeprecatedAllowCodeGenerationFromStringsCallback callback) {}
 void Isolate::SetWasmCompileStreamingCallback(ApiImplementationCallback callback) {}
 bool Isolate::IsDead() { return false; }
 void Isolate::SetFailedAccessCheckCallbackFunction(FailedAccessCheckCallback callback) {}
@@ -332,9 +326,9 @@ void V8::AddGCPrologueCallback(GCCallback callback, GCType gc_type) {}
 void V8::AddGCEpilogueCallback(GCCallback callback, GCType gc_type) {}
 void V8::InitializePlatform(Platform* platform) {}
 void V8::ShutdownPlatform() {}
-#if V8_OS_LINUX && V8_TARGET_ARCH_X64 && !V8_OS_ANDROID
+#if V8_OS_POSIX
 bool TryHandleSignal(int signum, void* info, void* context) { return false; }
-#endif  // V8_OS_LINUX
+#endif  // V8_OS_POSIX
 bool V8::RegisterDefaultSignalHandler() { return false; }
 void V8::SetEntropySource(EntropySource entropy_source) {}
 void V8::SetReturnAddressLocationResolver(
