@@ -130,12 +130,6 @@ Maybe<bool> v8::Object::ForceSet(v8::Local<v8::Context> context,
 	return Just(true);
 }
 
-bool v8::Object::ForceSet(v8::Local<Value> key, v8::Local<Value> value,
-													v8::PropertyAttribute attribs) {
-	return ForceSet(CONTEXT(),
-									key, value, attribs).FromMaybe(false);
-}
-
 Maybe<bool> v8::Object::SetPrivate(Local<Context> context,
 																	 Local<Private> key, Local<Value> value) {
 	ENV(context->GetIsolate());

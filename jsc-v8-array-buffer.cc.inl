@@ -155,6 +155,9 @@ bool v8::ArrayBuffer::IsExternal() const {
 
 v8::ArrayBuffer::Contents v8::ArrayBuffer::Externalize() {
 	Contents contents;
+	contents.allocation_base_ = nullptr;
+	contents.allocation_length_ = 0;
+	contents.allocation_mode_ = Allocator::AllocationMode::kNormal;
 	auto priv = BufferPrivateData::Private(ISOLATE(), i::Back<JSObjectRef>(this));
 	if (priv) {
 		ENV(priv->GetIsolate());
@@ -170,6 +173,9 @@ v8::ArrayBuffer::Contents v8::ArrayBuffer::Externalize() {
 v8::ArrayBuffer::Contents v8::ArrayBuffer::GetContents() {
 	ENV();
 	Contents contents;
+	contents.allocation_base_ = nullptr;
+	contents.allocation_length_ = 0;
+	contents.allocation_mode_ = Allocator::AllocationMode::kNormal;
 	auto len = JSObjectGetArrayBufferByteLength(ctx, i::Back<JSObjectRef>(this), OK(contents));
 	auto ptr = JSObjectGetArrayBufferBytesPtr(ctx, i::Back<JSObjectRef>(this), OK(contents));
 	contents.data_ = ptr;
