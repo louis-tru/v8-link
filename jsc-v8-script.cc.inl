@@ -70,17 +70,19 @@ class UnboundScript: public Wrap {
 	{
 		ENV(iso);
 		DCHECK(source_code);
-		if (!origin->ResourceName().IsEmpty()) {
-			m_source_url = Back(origin->ResourceName());
-			Reference(m_source_url);
-		}
-		if (!origin->SourceMapUrl().IsEmpty()) {
-			m_source_mapping_URL = Back(origin->SourceMapUrl());
-			Reference(m_source_mapping_URL);
-		}
-		if (!origin->ResourceLineOffset().IsEmpty()) {
-			m_resource_line_offset = JSValueToNumber(ctx, i::Back(origin->ResourceLineOffset()),
-																							 OK());
+		if (origin) {
+			if (!origin->ResourceName().IsEmpty()) {
+				m_source_url = Back(origin->ResourceName());
+				Reference(m_source_url);
+			}
+			if (!origin->SourceMapUrl().IsEmpty()) {
+				m_source_mapping_URL = Back(origin->SourceMapUrl());
+				Reference(m_source_mapping_URL);
+			}
+			if (!origin->ResourceLineOffset().IsEmpty()) {
+				m_resource_line_offset = JSValueToNumber(ctx, i::Back(origin->ResourceLineOffset()),
+																								 OK());
+			}
 		}
 		JSStringRetain(m_source_code);
 	}
