@@ -448,7 +448,7 @@ Local<Value> Symbol::Name() const {
 }
 
 Local<Value> Private::Name() const {
-	auto priv = reinterpret_cast<const i::Private*>(this);
+	auto priv = reinterpret_cast<const i::V8Private*>(this);
 	ENV(priv->GetIsolate());
 	auto r = JSValueMakeString(ctx, priv->Name());
 	return i::Cast(r);
@@ -723,7 +723,7 @@ Local<Symbol> v8::Symbol::For(Isolate* iso, Local<String> name) {
 
 Local<Private> v8::Private::New(Isolate* iso, Local<String> name) {
 	ENV(iso);
-	auto priv = new i::Private(isolate, i::Back(name));
+	auto priv = new i::V8Private(isolate, i::Back(name));
 	auto p2 = i::Cast<Private>(priv);
 	return p2;
 }
@@ -751,12 +751,12 @@ Local<Private> v8::Private::ForApi(Isolate* iso, Local<String> name) {
 	if (JSObjectHasProperty(ctx, isolate->private_for_api(), *key)) {
 		auto r = (JSObjectRef)JSObjectGetProperty(ctx, isolate->private_for_api(), *key, OK(err));
 		DCHECK(JSValueIsObject(ctx, obj));
-		auto priv = (i::Private*)JSObjectGetPrivate(r);
+		auto priv = (i::V8Private*)JSObjectGetPrivate(r);
 		DCHECK(priv);
 		return i::Cast<Private>(priv);
 	} else {
 		JSValueRef argv[1] = { i::Back(name) };
-		auto priv = new i::Private(isolate, i::Back(name));
+		auto priv = new i::V8Private(isolate, i::Back(name));
 		JSObjectSetProperty(ctx, isolate->private_for_api(), *key, priv->Handle(), 0, OK(err));
 		return i::Cast<Private>(priv);
 	}

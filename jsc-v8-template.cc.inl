@@ -76,7 +76,7 @@ class Template: public Wrap {
 	
 	void SetPrivate(Local<v8::Private> name, Local<v8::Data> value,
 									v8::PropertyAttribute attributes = None) {
-		Set(i::Private::PrivateValue(name), value, attributes);
+		Set(i::V8Private::PrivateValue(name), value, attributes);
 	}
 	
 	void SetAccessorProperty(Local<v8::Name> name,

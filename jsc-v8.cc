@@ -283,7 +283,11 @@ struct EmbedderData {
 	Type type = CPointer;
 };
 
-class PrivateDataBase: public Object {
+/**
+ * JSObjectGetPrivate()
+ * @class PrivateInJSObject 
+*/
+class PrivateInJSObject: public Object {
  public:
 	virtual PrivateData* AsPrivateData() { return nullptr; }
 	virtual CallbackInfo* AsCallbackInfo() { return nullptr; }
@@ -294,7 +298,7 @@ class PrivateDataBase: public Object {
 static int PrivateData_count = 0;
 #endif
 
-class PrivateData: public PrivateDataBase {
+class PrivateData: public PrivateInJSObject {
  public:
 	typedef DefaultTraits Traits;
 	
