@@ -8805,7 +8805,7 @@ class V8_EXPORT Locker {
 
 // --- Implementation ---
 
-#include "v8.h.inl"
+#include "v8.inl"
 #if !USE_JSC
 namespace internal {
 
